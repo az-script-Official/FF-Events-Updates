@@ -125,9 +125,6 @@ npx serve .
 ---
 
 
-
----
-
 ## Credits | الفضل
 
 - **Developed by:** [AZ SCRIPT](https://github.com/az-script-Official)
