@@ -85,19 +85,16 @@ npx serve .
 4. **Download Banners** - Click the download button to save event images
    **تحميل البنرات** - اضغط على زر التحميل لحفظ صور الأحداث
 
-5. **Copy Links** - Click the copy button to copy any URL
-   **نسخ الروابط** - اضغط على زر النسخ لنسخ أي رابط
-
-6. **Switch Language** - Use the language switch button to change event display language
+5. **Switch Language** - Use the language switch button to change event display language
    **تبديل اللغة** - استخدم زر تبديل اللغة لتغيير لغة عرض الأحداث
 
-7. **Go Back** - Click the back button to return to the server selection
+6. **Go Back** - Click the back button to return to the server selection
    **رجوع** - اضغط على زر الرجوع للعودة إلى اختيار السرفر
 
 ---
 
 
-## Credits | الفضل
+## Credits | صانع
 
 - **Developed by:** [AZ SCRIPT](https://github.com/az-script-Official)
 - **Telegram:** [@AZSCRIPTX](https://t.me/AZSCRIPTX)
