@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <title>أحداث فري فاير</title>
+    <link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/az-script-Official/CRAFT-LAND-INFO/main/image/icon.jpg">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&family=Cairo:wght@400;600;700;800;900&display=swap');
+        :root{--bg:#080a0e;--accent:#63b3ed;--accent-dim:rgba(99,179,237,0.15);--accent-glow:rgba(99,179,237,0.08);--text:#f1f5f9;--text-muted:#cbd5e1;--text-faint:#94a3b8;--border:hsla(0,0%,100%,0.07);--glass-bg:rgba(4,6,12,0.6);--glass-blur:blur(12px);--radius:16px}
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Cairo','Syne',sans-serif;background-color:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 12px;overflow-x:hidden;position:relative;margin:0}
+        body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+        #particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+        .glass{background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--border);border-radius:var(--radius);transition:border-color 0.3s,box-shadow 0.3s}
+        .glass:hover{border-color:rgba(99,179,237,0.25);box-shadow:0 0 30px rgba(99,179,237,0.08)}
+        body>*:not(#particleCanvas){position:relative;z-index:1}
+        .hidden{display:none!important}
+        .header-container{text-align:center;margin-bottom:30px;width:100%;max-width:900px;display:flex;flex-direction:column;align-items:center;background:rgba(4,6,12,0.7);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:var(--radius);padding:25px 20px}
+        .main-title{font-family:'Syne',sans-serif;font-size:clamp(1.1rem,3.5vw,1.5rem);font-weight:800;margin-bottom:5px;background:linear-gradient(135deg,#63b3ed,#f1f5f9,#63b3ed);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px;animation:titleShine 4s linear infinite}
+        @keyframes titleShine{to{background-position:200% center}}
+        .region-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;width:100%;max-width:900px;margin-bottom:20px}
+        @media(max-width:600px){.region-grid{gap:6px;grid-template-columns:repeat(5,1fr)}}
+        @media(max-width:400px){.region-grid{gap:4px}}
+        .btn-main{width:100%;padding:14px 12px;border-radius:12px;border:none;font-family:'Cairo',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;transition:all 0.3s cubic-bezier(0.175,0.885,0.32,1.275);display:flex;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden;font-size:0.9rem;white-space:nowrap;text-decoration:none;color:var(--text)}
+        .btn-main svg{width:18px!important;height:18px!important;min-width:18px!important;min-height:18px!important;flex-shrink:0!important;display:block}
+        .btn-main:hover{transform:translateY(-2px)}
+        .btn-outline{background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--border);color:var(--text)}
+        .btn-outline:hover{border-color:rgba(99,179,237,0.4);box-shadow:0 0 20px rgba(99,179,237,0.15);background:rgba(99,179,237,0.1)}
+        .btn-primary{background:var(--accent);color:var(--bg);font-weight:900}
+        .btn-primary:hover{background:#90cdf4;box-shadow:0 0 25px rgba(99,179,237,0.4)}
+        .btn-mini-action{background:var(--glass-bg);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:6px;cursor:pointer;margin-inline-start:8px;display:inline-flex;align-items:center;justify-content:center;transition:all 0.25s;vertical-align:middle}
+        .btn-mini-action:hover{border-color:rgba(99,179,237,0.4);box-shadow:0 0 12px rgba(99,179,237,0.15);background:rgba(99,179,237,0.1)}
+        .btn-mini-action.success{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+        .btn-mini-action svg{width:14px;height:14px}
+        .region-btn{padding:10px 2px!important;font-size:clamp(10px,3vw,14px)!important;min-height:44px;flex-direction:column;gap:2px!important}
+        .region-btn .region-name{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(11px,3vw,15px);color:var(--accent)}
+        .region-btn .region-desc{font-size:clamp(7px,1.8vw,10px);opacity:0.6;font-weight:600;white-space:normal;text-align:center;line-height:1.2;color:var(--text-faint)}
+        @media(max-width:400px){.region-btn{padding:8px 1px!important;min-height:38px}.region-btn .region-desc{font-size:7px}}
+        .card{background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--border);border-radius:var(--radius);padding:clamp(15px,4vw,30px);width:100%;max-width:900px;position:relative;animation:fadeIn 0.5s ease;margin-bottom:20px;transition:border-color 0.3s,box-shadow 0.3s}
+        .card:hover{border-color:rgba(99,179,237,0.25);box-shadow:0 0 40px rgba(99,179,237,0.06)}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+        .card-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:15px;border-bottom:1px solid var(--border);padding-bottom:10px;display:flex;align-items:center;gap:8px}
+        .top-bar{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:1200px;margin-bottom:20px;gap:10px;flex-wrap:wrap}
+        .section-title{font-family:'Syne',sans-serif;font-size:20px;margin:30px 0 15px 0;color:var(--accent);border-bottom:1px solid rgba(99,179,237,0.2);padding-bottom:10px;font-weight:800;text-transform:uppercase}
+        .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+        .data-card{background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:border-color 0.3s,box-shadow 0.3s}
+        .data-card:hover{border-color:rgba(99,179,237,0.3);box-shadow:0 0 35px rgba(99,179,237,0.08)}
+        .data-card img{width:100%;height:auto;max-height:350px;object-fit:contain;background:rgba(0,0,0,0.3);border-bottom:1px solid var(--border);display:block;cursor:pointer;transition:opacity 0.3s}
+        .data-card img:hover{opacity:0.85}
+        .data-card-header{padding:15px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:rgba(4,6,12,0.4);border-bottom:1px solid var(--border);transition:background 0.2s}
+        .data-card-header:hover{background:rgba(99,179,237,0.08)}
+        .data-card-title{font-family:'Cairo',sans-serif;font-size:15px;color:var(--text);font-weight:bold;margin:0;line-height:1.4;flex:1}
+        .toggle-icon{color:var(--text-faint);font-size:14px;transition:transform 0.3s;margin-inline-start:10px}
+        .data-card-header.open .toggle-icon{transform:rotate(180deg)}
+        .data-card-details{padding:15px;display:none;flex-direction:column}
+        .data-card-details.open{display:flex}
+        .data-card-info p{margin-bottom:8px;font-size:13px;color:var(--text-muted);line-height:1.5;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+        .data-card-info p strong{color:var(--text)}
+        .data-card-info a{color:var(--accent);text-decoration:none;word-break:break-all}
+        .data-card-info a:hover{text-decoration:underline}
+        .details-box{background:rgba(0,0,0,0.3);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:15px;border-radius:10px;margin:8px 0 15px 0;font-family:'DM Mono',monospace;font-size:13px;color:var(--text-muted);white-space:pre-wrap;max-height:250px;overflow-y:auto;border:1px solid var(--border);line-height:1.6}
+        #loader{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:100;text-align:center;background:var(--glass-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:var(--radius);padding:30px 40px}
+        .spinner{border:3px solid rgba(255,255,255,0.06);width:44px;height:44px;border-radius:50%;border-left-color:var(--accent);animation:spin 0.9s linear infinite;margin:0 auto 15px auto}
+        #loader span{font-family:'Cairo',sans-serif;font-size:15px;color:var(--text-muted);font-weight:700;letter-spacing:1px}
+        @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+        .social-icons{display:flex;justify-content:center;gap:16px;margin-top:18px}
+        .social-icon{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--border);color:var(--text);transition:all 0.3s cubic-bezier(0.175,0.885,0.32,1.275);text-decoration:none}
+        .social-icon:hover{transform:translateY(-4px) scale(1.08);border-color:rgba(99,179,237,0.4);box-shadow:0 0 20px rgba(99,179,237,0.2)}
+        .social-icon.telegram:hover{background:rgba(0,136,204,0.3);border-color:rgba(0,136,204,0.5)}
+        .social-icon.youtube:hover{background:rgba(255,0,0,0.3);border-color:rgba(255,0,0,0.5)}
+        .social-icon.github:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2)}
+        .social-icon svg{width:22px;height:22px}
+    </style>
+</head>
+<body>
+    <canvas id="particleCanvas"></canvas>
+    <div class="header-container">
+        <h1 class="main-title">أحداث وتحديثات فري فاير</h1>
+    </div>
+    <div id="mainView" style="width:100%;display:flex;flex-direction:column;align-items:center;">
+        <div class="region-grid" id="regionGrid"></div>
+    </div>
+    <div id="footer" style="text-align:center;width:100%;max-width:900px;margin-top:auto;padding:20px 20px 30px;position:relative;z-index:1;">
+        <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:var(--accent);margin-bottom:10px;">بواسطة AZ SCRIPT</div>
+        <div style="margin-bottom:14px;"><a href="https://github.com/az-script-Official/FF-Events-Updates" target="_blank" style="color:var(--text-muted);text-decoration:none;font-weight:600;font-size:0.85rem;transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-muted)'">كود سورس الموقع - اضغط هنا</a></div>
+        <div class="social-icons">
+            <a href="https://t.me/AZSCRIPTX" target="_blank" class="social-icon telegram" title="Telegram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+            <a href="https://youtube.com/@azcraftland" target="_blank" class="social-icon youtube" title="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+            <a href="https://github.com/az-script-Official" target="_blank" class="social-icon github" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+        </div>
+    </div>
+    <div id="regionView" class="hidden" style="width:100%;max-width:1200px;">
+        <div class="top-bar" id="topBar" style="display:none;">
+            <button class="btn-main btn-outline" style="width:auto;padding:10px 20px;" onclick="goBack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg><span>رجوع</span></button>
+            <button id="globalSwitchBtn" class="btn-main btn-outline hidden" style="width:auto;padding:10px 20px;" onclick="toggleGlobalLang()"></button>
+        </div>
+        <div id="loader"><div class="spinner"></div><span>جاري تحميل البيانات...</span></div>
+        <div id="contentArea" class="hidden">
+            <div class="section-title" id="splashSectionTitle">أحداث</div>
+            <div class="cards-grid" id="splashGrid"></div>
+            <div class="section-title" id="newsSectionTitle">الإعلانات والأخبار</div>
+            <div class="cards-grid" id="newsGrid"></div>
+        </div>
+    </div>
+<script>
+(function(){const c=document.getElementById('particleCanvas'),x=c.getContext('2d');let p=[];const N=60,D=150;function r(){c.width=window.innerWidth;c.height=window.innerHeight}r();window.addEventListener('resize',r);for(let i=0;i<N;i++){p.push({x:Math.random()*c.width,y:Math.random()*c.height,vx:(Math.random()-0.5)*0.4,vy:(Math.random()-0.5)*0.4,s:Math.random()*2+1,o:Math.random()*0.5+0.2})}function a(){x.clearRect(0,0,c.width,c.height);p.forEach(q=>{q.x+=q.vx;q.y+=q.vy;if(q.x<0)q.x=c.width;if(q.x>c.width)q.x=0;if(q.y<0)q.y=c.height;if(q.y>c.height)q.y=0;x.beginPath();x.arc(q.x,q.y,q.s,0,Math.PI*2);x.fillStyle='rgba(99,179,237,'+q.o+')';x.fill()});for(let i=0;i<p.length;i++){for(let j=i+1;j<p.length;j++){const dx=p[i].x-p[j].x,dy=p[i].y-p[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<D){const al=(1-d/D)*0.15;x.beginPath();x.moveTo(p[i].x,p[i].y);x.lineTo(p[j].x,p[j].y);x.strokeStyle='rgba(99,179,237,'+al+')';x.lineWidth=0.5;x.stroke()}}}requestAnimationFrame(a)}a()})();
+const API_BASE="https://kog-ff-events.vercel.app/api/splash",regions=['PK','IND','BR','ME','NA','VN','ID','SG','BD','TW','TH','CIS','EU','SAC','US'],regionNames={'PK':'سرفر باكستان','IND':'سرفر الهند','BR':'سرفر البرازيل','ME':'سرفر شرق أوسط','NA':'سرفر أمريكا الشمالية','VN':'سرفر فيتنام','ID':'سرفر إندونيسيا','SG':'سرفر سنغافورة','BD':'سرفر بنغلاديش','TW':'سرفر تايوان','TH':'سرفر تايلاند','CIS':'سرفر رابطة الدول المستقلة','EU':'سرفر أوروبا','SAC':'سرفر أمريكا الجنوبية','US':'سرفر الولايات المتحدة'},regionLangs={'ME':['ar','en','fr'],'NA':['es','en'],'US':['es'],'BR':['pt-br'],'IND':['hi','en'],'BD':['bn','en'],'EU':['tr','en'],'PK':['en'],'VN':['vi'],'ID':['id'],'SG':['ms','en'],'TW':['zh-tw'],'TH':['th'],'CIS':['ru'],'SAC':['es']},cache={};let currentRegion=null,currentGlobalLangIndex=0;const placeholderImageAr="https://i.ibb.co/8DfkBqDr/Coming-Soon-ar.png";
+window.onload=()=>{const g=document.getElementById('regionGrid');regions.forEach(r=>{const b=document.createElement('button');b.className='btn-main btn-outline region-btn';b.innerHTML='<span class="region-name">'+r+'</span><span class="region-desc">'+regionNames[r]+'</span>';b.onclick=()=>selectRegion(r);g.appendChild(b)})};
+function goBack(){document.getElementById('regionView').classList.add('hidden');document.getElementById('mainView').classList.remove('hidden');document.getElementById('footer').classList.remove('hidden');currentRegion=null}
+function fetchApi(r,l){if(!cache[r])cache[r]={};if(cache[r][l])return cache[r][l];const p=fetch(API_BASE+'/'+r+'?lang='+l).then(res=>res.json()).catch(()=>null);cache[r][l]=p;return p}
+function formatTimestamp(t){if(!t||t===0)return"N/A";const d=new Date(t*1000),day=String(d.getDate()).padStart(2,'0'),mn=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],m=mn[d.getMonth()],y=d.getFullYear();let h=d.getHours(),mi=String(d.getMinutes()).padStart(2,'0'),ap=h>=12?'م':'ص';h=h%12;h=h?h:12;return'\u200E'+day+' '+m+' '+y+' '+String(h).padStart(2,'0')+':'+mi+' '+ap+'\u200E'}
+function isValidUrl(s){if(!s)return false;return String(s).trim().startsWith('http://')||String(s).trim().startsWith('https://')}
+function makeLinkIfUrl(t){if(isValidUrl(t))return'<a href="'+t.trim()+'" target="_blank">'+t.trim()+'</a>';return t}
+function formatFreeFireText(t){if(!t)return"";return String(t).replace(/\[([A-Fa-f0-9]{6})\]([\s\S]*?)\[-\]/g,'<span style="color:#$1;font-weight:bold;">$2</span>')}
+function fixImageUrl(u){if(!u)return"";return u.trim().replace(/\.ff_extend$/i,'.jpg')}
+function toggleCard(el){const c=el.closest('.data-card'),d=c.querySelector('.data-card-details'),h=c.querySelector('.data-card-header');if(d)d.classList.toggle('open');if(h)h.classList.toggle('open')}
+function createCopyBtn(u){const s=String(u).replace(/'/g,"\\'").replace(/"/g,'&quot;');return'<button onclick="copyToClipboard(this,\''+s+'\')" class="btn-mini-action" title="نسخ"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>'}
+function createDownloadBtn(u){const s=String(u).replace(/'/g,"\\'").replace(/"/g,'&quot;');return'<button onclick="downloadImage(this,\''+s+'\')" class="btn-mini-action" title="تحميل"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></button>'}
+function copyToClipboard(b,t){navigator.clipboard.writeText(t).then(()=>{const o=b.innerHTML;b.innerHTML='<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';b.classList.add('success');setTimeout(()=>{b.innerHTML=o;b.classList.remove('success')},1500)}).catch(()=>{})}
+async function downloadImage(b,u){try{const r=await fetch(u);if(!r.ok)throw new Error();const bl=await r.blob(),bu=URL.createObjectURL(bl),a=document.createElement('a');a.style.display='none';a.href=bu;a.download=u.split('/').pop().split('?')[0]||'image.jpg';document.body.appendChild(a);a.click();URL.revokeObjectURL(bu);document.body.removeChild(a)}catch(e){const a=document.createElement('a');a.href=u;a.download='image.jpg';a.target='_blank';document.body.appendChild(a);a.click();document.body.removeChild(a)}}
+async function selectRegion(r){currentRegion=r;currentGlobalLangIndex=0;document.getElementById('mainView').classList.add('hidden');document.getElementById('footer').classList.add('hidden');document.getElementById('regionView').classList.remove('hidden');document.getElementById('contentArea').classList.add('hidden');document.getElementById('topBar').style.display='none';document.getElementById('globalSwitchBtn').classList.add('hidden');document.getElementById('loader').style.display='block';const l=regionLangs[r];await Promise.all(l.map(x=>fetchApi(r,x)));const g=document.getElementById('globalSwitchBtn');if(l.length>1){g.classList.remove('hidden');updateGlobalButtonText()}else{g.classList.add('hidden')}document.getElementById('loader').style.display='none';await renderAllCards(l[0]);document.getElementById('topBar').style.display='flex';document.getElementById('contentArea').classList.remove('hidden')}
+function updateGlobalButtonText(){document.getElementById('globalSwitchBtn').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:20px;height:20px;margin-inline-end:8px;"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg><span>تبديل لغة أحداث</span>'}
+function toggleGlobalLang(){const l=regionLangs[currentRegion];if(l.length<=1)return;currentGlobalLangIndex=(currentGlobalLangIndex+1)%l.length;updateGlobalButtonText();renderAllCards(l[currentGlobalLangIndex])}
+async function renderAllCards(tl){const d=await cache[currentRegion][tl],sg=document.getElementById('splashGrid'),ng=document.getElementById('newsGrid'),st=document.getElementById('splashSectionTitle'),nt=document.getElementById('newsSectionTitle');sg.innerHTML='';ng.innerHTML='';if(!d||!d.success){st.style.display='none';nt.style.display='none';return}if(d.splash_data&&d.splash_data.length>0){st.style.display='block';d.splash_data.forEach((it,i)=>{const c=document.createElement('div');c.className='data-card';c.id='splash-card-'+i;c.innerHTML=buildSplashInner(it,i,tl);sg.appendChild(c)})}else{st.style.display='none'}if(d.news_data&&d.news_data.length>0){nt.style.display='block';d.news_data.forEach((it,i)=>{const c=document.createElement('div');c.className='data-card';c.id='news-card-'+i;c.innerHTML=buildNewsInner(it,i,tl);ng.appendChild(c)})}else{nt.style.display='none'}}
+function buildSplashInner(it,i,cl){let rh='';if(isValidUrl(it.sub_go_pos)){let su=it.sub_go_pos.trim();rh='<p><strong>رابط التحويل:</strong> <a href="'+su+'" target="_blank">فتح الرابط</a> '+createCopyBtn(su)+'</p>'}const fu=fixImageUrl(it.image_url);let ig='<img src="'+fu+'" loading="lazy" alt="Splash" onclick="toggleCard(this)" onerror="this.onerror=null;this.src=\''+placeholderImageAr+'\';">';if(!fu)ig='<img src="'+placeholderImageAr+'" loading="lazy" onclick="toggleCard(this)" alt="قريباً">';let dh=fu?'<p><strong>تحميل الصورة:</strong> '+createDownloadBtn(fu)+'</p>':'';return ig+'<div class="data-card-header" onclick="toggleCard(this)"><p class="data-card-title">'+(it.name||'N/A')+'</p><span class="toggle-icon">&#9660;</span></div><div class="data-card-details"><div class="data-card-info"><p><strong>البداية:</strong> <span style="display:inline-block;direction:ltr;">'+formatTimestamp(it.start_time)+'</span></p><p><strong>النهاية:</strong> <span style="display:inline-block;direction:ltr;">'+formatTimestamp(it.end_time)+'</span></p>'+dh+rh+'</div></div>'}
+function buildNewsInner(it,i,cl){let dh='',lh='';if(it.desc&&String(it.desc).trim()!==""&&String(it.desc).trim()!=="0"){if(isValidUrl(it.desc)){let su=it.desc.trim();lh+='<p><strong>الرابط:</strong> <a href="'+su+'" target="_blank">فتح الرابط</a> '+createCopyBtn(su)+'</p>'}else{let fd=formatFreeFireText(it.desc);dh='<p><strong>التفاصيل:</strong></p><div class="details-box">'+makeLinkIfUrl(fd)+'</div>'}}if(isValidUrl(it.link_url)&&String(it.link_url).trim()!==String(it.desc).trim()){let su=it.link_url.trim();lh+='<p><strong>الرابط:</strong> <a href="'+su+'" target="_blank">فتح الرابط</a> '+createCopyBtn(su)+'</p>'}if(isValidUrl(it.sub_go_pos)&&String(it.sub_go_pos).trim()!==String(it.desc).trim()&&String(it.sub_go_pos).trim()!==String(it.link_url).trim()){let su=it.sub_go_pos.trim();lh+='<p><strong>رابط التحويل:</strong> <a href="'+su+'" target="_blank">فتح الرابط</a> '+createCopyBtn(su)+'</p>'}const fu=fixImageUrl(it.image_url);let ig='<img src="'+fu+'" loading="lazy" alt="News" onclick="toggleCard(this)" onerror="this.onerror=null;this.src=\''+placeholderImageAr+'\';">';if(!fu)ig='<img src="'+placeholderImageAr+'" loading="lazy" onclick="toggleCard(this)" alt="قريباً">';let dlh=fu?'<p style="margin-top:8px;"><strong>تحميل الصورة:</strong> '+createDownloadBtn(fu)+'</p>':'';let ft=formatFreeFireText(it.title||'N/A');return ig+'<div class="data-card-header" onclick="toggleCard(this)"><p class="data-card-title">'+ft+'</p><span class="toggle-icon">&#9660;</span></div><div class="data-card-details"><div class="data-card-info"><p><strong>البداية:</strong> <span style="display:inline-block;direction:ltr;">'+formatTimestamp(it.start_time)+'</span></p><p><strong>النهاية:</strong> <span style="display:inline-block;direction:ltr;">'+formatTimestamp(it.end_time)+'</span></p>'+dh+lh+dlh+'</div></div>'}
+</script>
+</body>
+</html>
