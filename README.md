@@ -124,25 +124,7 @@ npx serve .
 
 ---
 
-## Screenshots | لقطات الشاشة
 
-<p align="center">
-  <strong>Main Page</strong><br>
-  <strong>الصفحة الرئيسية</strong>
-</p>
-
-```
-┌──────────────────────────────┐
-│     أحداث وتحديثات فري فاير     │
-├──────────────────────────────┤
-│  ME  IND  BR  PK  NA        │
-│  VN  ID   SG  BD  TW        │
-│  TH  CIS  EU  SAC US        │
-├──────────────────────────────┤
-│        بواسطة AZ SCRIPT        │
-│    Telegram YouTube GitHub     │
-└──────────────────────────────┘
-```
 
 ---
 
