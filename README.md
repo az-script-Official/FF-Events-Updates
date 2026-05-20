@@ -14,24 +14,6 @@
   أداة ويب لتتبع أحداث فري فاير وبنرات البداية والتحديثات عبر جميع السرفرات المدعومة.
 </p>
 
----
-
-## Features | المميزات
-
-- **Glassmorphism UI** - Modern dark theme with glass-effect cards and animated particle background
-- **تصميم Glassmorphism** - واجهة داكنة عصرية مع بطاقات زجاجية وخلفية جزيئات متحركة
-- **15 Supported Regions** - Access events from all Free Fire servers
-- **15 سرفر مدعوم** - الوصول للأحداث من جميع سرفرات فري فاير
-- **Multi-language Events** - Switch event language per region
-- **أحداث متعددة اللغات** - تبديل لغة الأحداث حسب السرفر
-- **Image Download** - Direct download for all event banners
-- **تحميل الصور** - تحميل مباشر لجميع بنرات الأحداث
-- **Copy Links** - One-click copy for any URL
-- **نسخ الروابط** - نسخ بأضغطة واحدة لأي رابط
-- **Responsive Design** - Works on all devices
-- **تصميم متجاوب** - يعمل على جميع الأجهزة
-- **Single File** - No dependencies, just one HTML file
-- **ملف واحد** - بدون مكتبات خارجية، ملف HTML واحد فقط
 
 ---
 
