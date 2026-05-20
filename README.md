@@ -96,21 +96,10 @@ npx serve .
 
 ---
 
-## Tech Stack | التقنيات
-
-- **HTML5** - Structure | البنية
-- **CSS3** - Styling with Glassmorphism, Backdrop Filter, CSS Grid, Animations | التصميم بتأثير الزجاج والضبابية والشبكة والحركات
-- **JavaScript** - Vanilla JS, Fetch API, Canvas Animation | جافاسكريبت بدون مكتبات، Fetch API، رسوم Canvas
-- **API** - Data from `kog-ff-events.vercel.app` | البيانات من `kog-ff-events.vercel.app`
-- **Fonts** - Google Fonts (Syne, DM Mono, Cairo) | خطوط جوجل (Syne, DM Mono, Cairo)
-
----
-
 
 ## Credits | الفضل
 
 - **Developed by:** [AZ SCRIPT](https://github.com/az-script-Official)
-- **التطوير:** [AZ SCRIPT](https://github.com/az-script-Official)
 - **Telegram:** [@AZSCRIPTX](https://t.me/AZSCRIPTX)
 - **YouTube:** [@azcraftland](https://youtube.com/@azcraftland)
 - **GitHub:** [az-script-Official](https://github.com/az-script-Official)
